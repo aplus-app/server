@@ -95,7 +95,6 @@ impl Comment {
 
     pub fn heart(comment_id: i32, conn: &PgConnection) -> Comment {
         use crate::schema::comment::dsl::*;
-
         diesel::update(comment.filter(id.eq(comment_id)))
             .set(hearts.eq(hearts.clone() + 1))
             .get_result(conn)
@@ -105,6 +104,7 @@ impl Comment {
 
 use crate::schema::comment;
 use std::ops::Add;
+use rocket::http::{Cookie};
 
 #[derive(Insertable, Serialize, Deserialize)]
 #[table_name = "comment"]
