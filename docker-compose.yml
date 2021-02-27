@@ -1,0 +1,10 @@
+version: "3"
+services:
+  database:
+    image: "postgres:latest"
+    ports:
+      - 5432:5432
+    environment:
+      env_file: docker.env
+    volumes:
+      - ./db/:/var/lib/postgresql/data/

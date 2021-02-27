@@ -1,2 +1,6 @@
 /target
 /.idea
+/db
+.env
+Rocket.toml
+docker.env
