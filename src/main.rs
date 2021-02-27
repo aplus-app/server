@@ -6,12 +6,12 @@
 
 pub mod models;
 pub mod schema;
+pub mod routes;
 use rocket::request::Request;
 use rocket_contrib::databases::diesel::PgConnection;
 use rocket_contrib::json::Json;
 use diesel::prelude::*;
 use serde::{Serialize, Deserialize};
-
 
 #[database("cooldb")]
 struct CoolDb(PgConnection);
@@ -27,7 +27,7 @@ fn catch_not(_req: &Request) -> &'static str {
 }
 
 fn main() {
-	rocket::ignite()
+	routes::fuel(rocket::ignite())
 		.attach(CoolDb::fairing())
 		.register(catchers![catch_not])
 		.mount("/", routes![status])
