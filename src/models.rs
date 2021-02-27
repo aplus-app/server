@@ -36,6 +36,11 @@ impl Post {
 			.get_result(conn)
 			.expect("Error saving post")
 	}
+
+	pub fn delete(postid: i32, conn: &PgConnection) -> usize {
+		use crate::schema::post::dsl::*;
+		diesel::delete(post.filter(id.eq(postid))).execute(conn).expect("Error deleting")
+	}
 }
 
 use super::schema::post;

@@ -26,6 +26,16 @@ fn create_post(input: Json<CreatePostJson>, conn: CoolDb) -> Json<Post> {
 	))
 }
 
+#[derive(Serialize, Deserialize)]
+struct DeletePostJson {
+	id: i32
+}
+
+#[post("/delete-post", format = "json" data = "<input>")]
+fn delete_post(input: Json<DeletePostJson>, conn: CoolDb) -> Json<usize> {
+	Json(Post::delete(input.id, &conn.0))
+}
+
 pub fn fuel(rocket: Rocket) -> Rocket {
 	rocket.mount("/", routes![create_post])
 }
