@@ -37,8 +37,7 @@ fn remove_post(input: Json<RemovePostJson>, conn: CoolDb) -> Json<&'static str> 
     use crate::schema::post::dsl::*;
     use diesel::prelude::*;
 
-    let count = diesel::delete(post.filter(id.eq(input.id))).execute(&conn)?;
-    if count == 0 {
+    if diesel::delete(post.filter(id.eq(input.id))).execute(&conn)? == 0 {
         return Json("{ 'status': 'false', 'error': 'The specified post was not found.' }");
     }
     Json("{ 'status': 'true' }")
