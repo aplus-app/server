@@ -27,6 +27,7 @@ pub struct PostsJson {
     pub title: String,
     pub body: String,
     pub id: String,
+    pub hearts: i32,
     pub comments: Vec<CommentsJson>,
     pub hearts: i32
 }
@@ -113,6 +114,7 @@ impl Post {
                 title: i.title,
                 body: i.body,
                 id: i.id.to_string(),
+                hearts: i.hearts,
                 comments: data,
 	              hearts: i.hearts
             };
