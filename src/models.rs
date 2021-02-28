@@ -26,6 +26,7 @@ pub struct PostsJson {
     pub user_name: String,
     pub title: String,
     pub body: String,
+    pub id: String,
     pub comments: Vec<CommentsJson>,
 }
 
@@ -110,6 +111,7 @@ impl Post {
                 user_name: i.user_name,
                 title: i.title,
                 body: i.body,
+                id: i.id.to_string(),
                 comments: data,
             };
 
