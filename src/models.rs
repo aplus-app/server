@@ -10,6 +10,7 @@ pub struct Post {
   pub user_id: String,
   pub title: String,
   pub body: String,
+  pub hearts: i32,
 }
 
 impl Post {
@@ -19,6 +20,7 @@ impl Post {
     user_id: &'a str,
     title: &'a str,
     body: &'a str,
+    hearts: i32,
     conn: &PgConnection,
   ) -> Post {
     use super::schema::post;
@@ -29,6 +31,7 @@ impl Post {
       user_id,
       title,
       body,
+      hearts
     };
 
     diesel::insert_into(post::table)
@@ -43,7 +46,22 @@ impl Post {
       .execute(conn)
       .expect("Error deleting")
   }
-}
+
+  pub fn heart(post_id: i32, conn: &PgConnection) -> Post {
+    use crate::schema::post::dsl::*;
+    diesel::update(post.filter(id.eq(post_id)))
+        .set(hearts.eq(hearts.clone() + 1))
+        .get_result(conn)
+        .expect("Could not add heart to the post.")
+  }
+
+  pub fn unheart(post_id: i32, conn: &PgConnection) -> Post {
+    use crate::schema::post::dsl::*;
+    diesel::update(post.filter(id.eq(post_id)))
+        .set(hearts.eq(hearts.clone() - 1))
+        .get_result(conn)
+        .expect("Could not add heart to the post.")
+  }}
 
 use super::schema::post;
 
@@ -55,6 +73,7 @@ pub struct InsertablePost<'a> {
   pub user_id: &'a str,
   pub title: &'a str,
   pub body: &'a str,
+  pub hearts: i32,
 }
 
 // ======================== COMMENT MODELS ==================================================
@@ -66,17 +85,15 @@ pub struct Comment {
   pub id: i32,
   pub post_id: String,
   pub body: String,
-  pub hearts: i32,
 }
 
 impl Comment {
-  pub fn new(post_id: &str, body: &str, hearts: i32, conn: &PgConnection) -> Comment {
+  pub fn new(post_id: &str, body: &str, conn: &PgConnection) -> Comment {
     use super::schema::comment;
 
     let u = InsertableComment {
       post_id,
       body,
-      hearts,
     };
 
     diesel::insert_into(comment::table)
@@ -92,13 +109,7 @@ impl Comment {
       .expect("Error deleting comment.")
   }
 
-  pub fn heart(comment_id: i32, conn: &PgConnection) -> Comment {
-    use crate::schema::comment::dsl::*;
-    diesel::update(comment.filter(id.eq(comment_id)))
-      .set(hearts.eq(hearts.clone() + 1))
-      .get_result(conn)
-      .expect("Could not add heart to the comment.")
-  }
+
 }
 
 use crate::schema::comment;
@@ -108,5 +119,4 @@ use crate::schema::comment;
 pub struct InsertableComment<'a> {
   pub post_id: &'a str,
   pub body: &'a str,
-  pub hearts: i32,
 }
