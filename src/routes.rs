@@ -77,6 +77,7 @@ fn remove_heart(input: Json<HeartPostJson>, conn: CoolDb) -> Json<Post> {
 }
 
 use crate::models::FetchPostsJson;
+use rocket::http::Status;
 
 #[get("/get/posts")]
 fn get_posts(conn: CoolDb) -> Json<FetchPostsJson> {
