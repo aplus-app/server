@@ -3,6 +3,7 @@ table! {
         id -> Int4,
         post_id -> Varchar,
         body -> Varchar,
+        user_name -> Varchar,
     }
 }
 

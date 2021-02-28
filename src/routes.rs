@@ -43,11 +43,12 @@ fn delete_post(input: Json<DeletePostJson>, conn: CoolDb) -> Json<usize> {
 struct CreateCommentJson {
     post_id: String,
     body: String,
+    user_name: String,
 }
 
 #[post("/create-comment", format = "json", data = "<input>")]
 fn create_comment(input: Json<CreateCommentJson>, conn: CoolDb) -> Json<Comment> {
-    Json(Comment::new(&input.post_id, &input.body, &conn.0))
+    Json(Comment::new(&input.post_id, &input.user_name, &input.body, &conn.0))
 }
 
 #[derive(Serialize, Deserialize)]
@@ -75,6 +76,16 @@ fn remove_heart(input: Json<HeartPostJson>, conn: CoolDb) -> Json<Post> {
     Json(Post::unheart(input.id, &conn.0))
 }
 
+use crate::models::FetchPostsJson;
+
+#[get("/get/posts")]
+fn get_posts(conn: CoolDb) -> Json<FetchPostsJson> {
+    let all = Post::fetch_posts(&conn.0);
+    Json(FetchPostsJson {
+        posts: all
+    })
+}
+
 pub fn fuel(rocket: Rocket) -> Rocket {
     rocket.mount(
         "/",
@@ -85,6 +96,7 @@ pub fn fuel(rocket: Rocket) -> Rocket {
       delete_comment,
       add_heart,
       remove_heart,
+      get_posts
     ],
     )
 }
