@@ -50,7 +50,7 @@ impl Fairing for CORS {
   }
 }
 
-#[get("/")]
+#[option("/")]
 fn get_handler<'a>() -> Response<'a> {
   let mut res = Response::new();
   res.set_status(Status::new(200, "No Content"));
