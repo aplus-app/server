@@ -66,6 +66,6 @@ fn main() {
   routes::fuel(rocket::ignite())
     .attach(CoolDb::fairing())
     .register(catchers![catch_not])
-    .mount("/", routes![status])
+    .mount("/", routes![get_handler, status])
     .launch();
 }
