@@ -29,7 +29,6 @@ pub struct PostsJson {
     pub id: String,
     pub hearts: i32,
     pub comments: Vec<CommentsJson>,
-    pub hearts: i32
 }
 
 #[derive(Serialize, Deserialize)]
@@ -116,7 +115,6 @@ impl Post {
                 id: i.id.to_string(),
                 hearts: i.hearts,
                 comments: data,
-	              hearts: i.hearts
             };
 
             data_to_return.push(post_data);
