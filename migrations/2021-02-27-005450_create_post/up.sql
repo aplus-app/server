@@ -6,5 +6,5 @@ create table post
     user_id   varchar not null,
     title     varchar not null,
     body      varchar not null,
-    hearts    integer not null
+    hearts    integer not null default 0
 )
